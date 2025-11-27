@@ -20,8 +20,21 @@ export default function Contact() {
       setForm({ full_name: "", email: "", message: "" });
       setToast({ type: "success", message: "Submitted successfully!" });
     },
-    onError: () => {
-      setToast({ type: "error", message: "Submission failed. Please try again." });
+    onError: (err: any) => {
+      // try to extract a friendly message from axios error
+      let msg = "Submission failed. Please try again.";
+      try {
+        const data = err?.response?.data;
+        if (data) {
+          if (typeof data.error === "string") msg = data.error;
+          else if (data.error && typeof data.error.message === "string") msg = data.error.message;
+          else if (typeof data.message === "string") msg = data.message;
+          else msg = JSON.stringify(data);
+        }
+      } catch (e) {
+        // fall back
+      }
+      setToast({ type: "error", message: msg });
     },
   });
 
