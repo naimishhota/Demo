@@ -23,6 +23,7 @@ export default function Header() {
           <nav className="hidden md:flex items-center gap-6">
             <Link href="/" className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600">Home</Link>
             <Link href="/contact" className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600">Contact</Link>
+            <Link href="/dashboard" className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600">Dashboard</Link>
             <a href="mailto:hello@example.com" className="text-sm inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-md">Get in touch</a>
           </nav>
 
@@ -50,6 +51,7 @@ export default function Header() {
           <div className="px-4 pt-4 pb-6 space-y-3">
             <Link href="/" className="block text-base font-medium text-gray-800 dark:text-gray-100">Home</Link>
             <Link href="/contact" className="block text-base font-medium text-gray-800 dark:text-gray-100">Contact</Link>
+            <Link href="/dashboard" className="block text-base font-medium text-gray-800 dark:text-gray-100">Dashboard</Link>
             <a href="mailto:hello@example.com" className="block text-base font-medium text-indigo-600">hello@example.com</a>
           </div>
         </div>
