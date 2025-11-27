@@ -1,0 +1,72 @@
+/* Footer custom styles to match CosmoTechExpo look-and-feel */
+.site-footer {
+  background: #35265a;
+  color: #fff;
+
+  .social-chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .chip {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 9999px;
+    padding: 0.6rem 1.25rem;
+    box-shadow: 0 8px 24px rgba(16, 24, 40, 0.12);
+    min-width: 320px;
+  }
+
+  .chip .icon {
+    height: 40px;
+    width: 40px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .chip .name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .chip .handle {
+    font-size: 0.75rem;
+    color: #dba6d3;
+  }
+
+  @media (max-width: 640px) {
+    .chip {
+      min-width: 220px;
+      padding: 0.5rem 0.9rem;
+    }
+    .site-footer .max-w-7xl { padding-left: 1rem; padding-right: 1rem; }
+  }
+
+  .footer-main {
+    border-top: 1px solid #3e2f6a;
+    padding-top: 2rem;
+
+    .col-title { color: #ffffff; font-weight: 700; }
+    .muted { color: #f3d5ee; }
+
+    .cta { margin-top: 1rem; }
+
+    .copyright {
+      border-top: 1px solid #3e2f6a;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      text-align: center;
+      color: #f0dff4;
+      font-size: 0.75rem;
+    }
+  }
+}
