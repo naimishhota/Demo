@@ -49,7 +49,7 @@ export default function Header() {
               {showRegister ? (
                 <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-purple-700 text-white ring-1 ring-black ring-opacity-5">
                   <div className="py-1">
-                    <Link href="/register" className="block px-4 py-2 text-sm hover:bg-purple-800">Register as a Visitor</Link>
+                    <Link href="/register/visitor" className="block px-4 py-2 text-sm hover:bg-purple-800">Register as a Visitor</Link>
                     <Link href="/register/exhibitor" className="block px-4 py-2 text-sm hover:bg-purple-800">Register as a Exhibitor</Link>
                   </div>
                 </div>
@@ -88,7 +88,7 @@ export default function Header() {
               <button onClick={() => setShowRegister((v) => !v)} className="w-full text-left block text-base font-medium text-gray-800 dark:text-gray-100">Register</button>
               {showRegister ? (
                 <div className="mt-2 pl-3 space-y-1">
-                  <Link href="/register" className="block text-sm font-medium text-gray-700 dark:text-gray-100">Register as a Visitor</Link>
+                  <Link href="/register/visitor" className="block text-sm font-medium text-gray-700 dark:text-gray-100">Register as a Visitor</Link>
                   <Link href="/register/exhibitor" className="block text-sm font-medium text-gray-700 dark:text-gray-100">Register as a Exhibitor</Link>
                 </div>
               ) : null}
