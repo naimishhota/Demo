@@ -23,10 +23,9 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-center gap-3">
-              <span className="inline-flex items-center justify-center h-10 w-10 rounded-md bg-indigo-600 text-white font-bold">CU</span>
               <div className="flex flex-col">
-                <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">ContactUs</span>
-                <span className="text-xs text-gray-500 dark:text-gray-400 -mt-0.5">Send messages simply</span>
+                <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">RCRB EXPO</span>
+
               </div>
             </Link>
           </div>
@@ -57,7 +56,7 @@ export default function Header() {
             </div>
 
             <Link href="/dashboard" className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600">Dashboard</Link>
-            <a href="mailto:hello@example.com" className="text-sm inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-md">Get in touch</a>
+
           </nav>
 
           <div className="md:hidden">
