@@ -1,7 +1,18 @@
+"use client";
+
 import Link from "next/link";
 import './style.scss';
 
 export default function Footer() {
+  const handleSocialClick = (name: string) => {
+    if (name === 'Whatsapp') {
+      const phoneNumber = '919611332197'; // WhatsApp number without + or spaces
+      const message = encodeURIComponent('Hello! I am interested in CosmoTechExpo. Can you provide more information?');
+      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+      window.open(whatsappUrl, '_blank');
+    }
+  };
+
   return (
     <footer className="site-footer bg-[#35265a] text-white">
       {/* top social chips */}
@@ -13,7 +24,11 @@ export default function Footer() {
             { name: 'Instagram', handle: '@cosmotechexpoIN', color: 'bg-pink-500', icon: 'I' },
             { name: 'Whatsapp', handle: '@cosmotechexpoIN', color: 'bg-emerald-500', icon: 'W' },
           ].map((s) => (
-            <div key={s.name} className="chip flex items-center shadow-md">
+            <div 
+              key={s.name} 
+              className={`chip flex items-center shadow-md cursor-pointer hover:opacity-80 transition-opacity`}
+              onClick={() => handleSocialClick(s.name)}
+            >
               <div className={`icon ${s.color}`}>{s.icon}</div>
               <div className="ml-4">
                 <div className="name">{s.name}</div>

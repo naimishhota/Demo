@@ -1,6 +1,8 @@
 import { supabase } from "@/lib/supabaseClient";
 import { NextResponse } from "next/server";
 import crypto from "crypto";
+import QRCode from "qrcode";
+import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
   try {
@@ -81,12 +83,64 @@ export async function POST(req: Request) {
     }
 
     // Fallback: update expovisitors
+    const { data: visitorData, error: selectVisErr } = await supabase
+      .from("expovisitors")
+      .select("id, full_name, email")
+      .eq("razorpay_order_id", razorpay_order_id)
+      .single();
+
+    if (selectVisErr) return NextResponse.json({ error: selectVisErr }, { status: 500 });
+
     const { error } = await supabase
       .from("expovisitors")
       .update(update)
       .eq("razorpay_order_id", razorpay_order_id);
 
     if (error) return NextResponse.json({ error }, { status: 500 });
+
+    if (valid && visitorData) {
+      try {
+        // Generate QR Code
+        const qrData = razorpay_order_id; // Using order ID as unique identifier
+        const qrCodeDataUrl = await QRCode.toDataURL(qrData);
+
+        // Send Email
+        const transporter = nodemailer.createTransport({
+          host: process.env.SMTP_HOST,
+          port: Number(process.env.SMTP_PORT),
+          secure: false,
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+          },
+        });
+
+        await transporter.sendMail({
+          from: process.env.SMTP_USER,
+          to: visitorData.email,
+          subject: "Your Expo Visitor Pass",
+          html: `
+            <h1>Welcome to the Expo, ${visitorData.full_name}!</h1>
+            <p>Your registration is confirmed.</p>
+            <p>Please show the QR code below at the entrance.</p>
+            <br>
+            <img src="cid:visitor-pass-qr" alt="Visitor Pass QR Code" />
+            <br>
+            <p>Order ID: ${razorpay_order_id}</p>
+          `,
+          attachments: [
+            {
+              filename: "visitor-pass-qr.png",
+              path: qrCodeDataUrl,
+              cid: "visitor-pass-qr", // same cid value as in the html img src
+            },
+          ],
+        });
+      } catch (emailErr) {
+        console.error("Failed to send pass email:", emailErr);
+        // We don't block the response, but logging is important
+      }
+    }
 
     return NextResponse.json({ ok: true, valid, type: "visitor" });
   } catch (err: any) {
