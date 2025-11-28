@@ -4,6 +4,7 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
+import Hero from "@/app/components/Hero";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -60,13 +61,11 @@ export default function Login() {
   };
 
   return (
-    <div className="flex justify-center py-12 bg-gray-50 dark:bg-gray-900 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-4 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
-        <div>
-          <h2 className="mt-4 text-center text-2xl font-bold text-gray-900 dark:text-white">
-            Admin Login
-          </h2>
-        </div>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <Hero title="Admin Login" description="Access your dashboard to manage the expo" />
+      
+      <div className="flex justify-center py-12 px-4 sm:px-6 lg:px-8 -mt-20 relative z-10">
+        <div className="max-w-md w-full space-y-4 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
         <form className="mt-6 space-y-4" onSubmit={handleLogin}>
           <div className="space-y-4">
             <div>
@@ -117,6 +116,7 @@ export default function Login() {
             </button>
           </div>
         </form>
+      </div>
       </div>
     </div>
   );

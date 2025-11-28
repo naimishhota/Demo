@@ -34,7 +34,9 @@ export default function Header() {
 
           <nav className="hidden md:flex items-center gap-6">
             <Link href="/" className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600">Home</Link>
+            <Link href="/about" className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600">About</Link>
             <Link href="/contact" className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600">Contact</Link>
+            <Link href="/faq" className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600">FAQ</Link>
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setShowRegister((v) => !v)}
@@ -99,7 +101,9 @@ export default function Header() {
         <div className="md:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
           <div className="px-4 pt-4 pb-6 space-y-3">
             <Link href="/" className="block text-base font-medium text-gray-800 dark:text-gray-100">Home</Link>
+            <Link href="/about" className="block text-base font-medium text-gray-800 dark:text-gray-100">About</Link>
             <Link href="/contact" className="block text-base font-medium text-gray-800 dark:text-gray-100">Contact</Link>
+            <Link href="/faq" className="block text-base font-medium text-gray-800 dark:text-gray-100">FAQ</Link>
             <div>
               <button onClick={() => setShowRegister((v) => !v)} className="w-full text-left block text-base font-medium text-gray-800 dark:text-gray-100">Register</button>
               {showRegister ? (
