@@ -2,11 +2,13 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { useAuth } from "@/app/context/AuthContext";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const { user, role, signOut } = useAuth();
 
   useEffect(() => {
     function onDoc(e: MouseEvent) {
@@ -55,7 +57,22 @@ export default function Header() {
               ) : null}
             </div>
 
-            <Link href="/dashboard" className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600">Dashboard</Link>
+            {role === "admin" && (
+              <Link href="/dashboard" className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600">Dashboard</Link>
+            )}
+
+            {user ? (
+              <button
+                onClick={() => signOut()}
+                className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-red-600"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link href="/login" className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600">
+                Login
+              </Link>
+            )}
 
           </nav>
 
@@ -92,7 +109,14 @@ export default function Header() {
                 </div>
               ) : null}
             </div>
-            <Link href="/dashboard" className="block text-base font-medium text-gray-800 dark:text-gray-100">Dashboard</Link>
+            {role === "admin" && (
+              <Link href="/dashboard" className="block text-base font-medium text-gray-800 dark:text-gray-100">Dashboard</Link>
+            )}
+            {user ? (
+              <button onClick={() => signOut()} className="block w-full text-left text-base font-medium text-red-600">Logout</button>
+            ) : (
+              <Link href="/login" className="block text-base font-medium text-indigo-600">Login</Link>
+            )}
             <a href="mailto:hello@example.com" className="block text-base font-medium text-indigo-600">hello@example.com</a>
           </div>
         </div>

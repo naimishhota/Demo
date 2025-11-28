@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     // Try updating exhibitors first
     const { data: exhibitorMatch, error: selectExErr } = await supabase
       .from("exhibitors")
-      .select("id, stall_id")
+      .select("id, stall_id, email, contact_person, company_name")
       .eq("razorpay_order_id", razorpay_order_id)
       .limit(1)
       .maybeSingle();
@@ -76,6 +76,49 @@ export async function POST(req: Request) {
           } else {
             return NextResponse.json({ error: e }, { status: 500 });
           }
+        }
+      }
+
+      if (valid) {
+        try {
+          // Generate QR Code
+          const qrData = razorpay_order_id;
+          const qrCodeDataUrl = await QRCode.toDataURL(qrData);
+
+          // Send Email
+          const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,
+            port: Number(process.env.SMTP_PORT),
+            secure: false,
+            auth: {
+              user: process.env.SMTP_USER,
+              pass: process.env.SMTP_PASS,
+            },
+          });
+
+          await transporter.sendMail({
+            from: process.env.SMTP_USER,
+            to: exhibitorMatch.email,
+            subject: "Your Expo Exhibitor Pass",
+            html: `
+              <h1>Welcome, ${exhibitorMatch.contact_person}!</h1>
+              <p>Your exhibitor registration for <strong>${exhibitorMatch.company_name}</strong> is confirmed.</p>
+              <p>Please show the QR code below at the entrance.</p>
+              <br>
+              <img src="cid:exhibitor-pass-qr" alt="Exhibitor Pass QR Code" />
+              <br>
+              <p>Order ID: ${razorpay_order_id}</p>
+            `,
+            attachments: [
+              {
+                filename: "exhibitor-pass-qr.png",
+                path: qrCodeDataUrl,
+                cid: "exhibitor-pass-qr",
+              },
+            ],
+          });
+        } catch (emailErr) {
+          console.error("Failed to send exhibitor pass email:", emailErr);
         }
       }
 
