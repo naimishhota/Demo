@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
 import { EventWithTickets } from "../../type/events";
+import Hero from "@/app/components/Hero";
 
 export default function EventsPage() {
   const { user, role, loading: authLoading } = useAuth();
@@ -99,23 +100,26 @@ export default function EventsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto py-8 px-4">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Event Management
-            </h1>
-            <p className="mt-2 text-gray-600 dark:text-gray-400">
-              Create, view, and manage events
-            </p>
-          </div>
-          <Link
-            href="/dashboard/events/create"
-            className="px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 font-semibold"
-          >
-            + Create New Event
-          </Link>
+      <Hero 
+        title="Manage Events" 
+        description="Create, update, and manage your events."
+      >
+        <button
+          onClick={() => router.push("/dashboard/events/create")}
+          className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
+          Create New Event
+        </button>
+      </Hero>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="mb-8 flex justify-between items-center">
+             <button 
+                onClick={() => router.push("/dashboard")}
+                className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+              >
+                ← Back to Dashboard
+              </button>
         </div>
 
         {/* Error Message */}
