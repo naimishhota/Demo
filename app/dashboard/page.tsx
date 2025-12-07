@@ -109,6 +109,43 @@ export default function Dashboard() {
           </div>
         ))}
       </section>
+
+      {/* Quick Actions */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Link
+            href="/dashboard/events"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow p-6 hover:shadow-lg transition-shadow border-l-4 border-blue-500"
+          >
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <svg
+                  className="h-8 w-8 text-blue-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
+              <div className="ml-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Manage Events
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Create and manage expo events
+                </p>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </section>
       </main>
     </div>
   );
