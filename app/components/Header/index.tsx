@@ -37,6 +37,7 @@ export default function Header() {
             <Link href="/about" className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600">About</Link>
             <Link href="/contact" className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600">Contact</Link>
             <Link href="/faq" className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600">FAQ</Link>
+            <Link href="/events" className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-indigo-600">Events</Link>
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setShowRegister((v) => !v)}
@@ -104,6 +105,7 @@ export default function Header() {
             <Link href="/about" className="block text-base font-medium text-gray-800 dark:text-gray-100">About</Link>
             <Link href="/contact" className="block text-base font-medium text-gray-800 dark:text-gray-100">Contact</Link>
             <Link href="/faq" className="block text-base font-medium text-gray-800 dark:text-gray-100">FAQ</Link>
+            <Link href="/events" className="block text-base font-medium text-gray-800 dark:text-gray-100">Events</Link>
             <div>
               <button onClick={() => setShowRegister((v) => !v)} className="w-full text-left block text-base font-medium text-gray-800 dark:text-gray-100">Register</button>
               {showRegister ? (

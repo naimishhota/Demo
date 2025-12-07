@@ -1,5 +1,6 @@
 import Speakers from "./components/speakers";
 import Hero from "./components/Hero";
+import UpcomingEvents from "./components/UpcomingEvents";
 
 export default function Home() {
   return (
@@ -15,6 +16,8 @@ export default function Home() {
           Book a Stall <span aria-hidden="true">→</span>
         </a>
       </Hero>
+
+      <UpcomingEvents />
 
       <Speakers />
     </div>
