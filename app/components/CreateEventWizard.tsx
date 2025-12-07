@@ -6,27 +6,36 @@ import { CreateEventFormData, EventTicket } from "../type/events";
 interface CreateEventWizardProps {
   onSubmit: (data: CreateEventFormData) => Promise<void>;
   onCancel: () => void;
+  initialData?: CreateEventFormData;
+  isEditMode?: boolean;
 }
 
-export default function CreateEventWizard({ onSubmit, onCancel }: CreateEventWizardProps) {
+export default function CreateEventWizard({ 
+  onSubmit, 
+  onCancel, 
+  initialData,
+  isEditMode = false 
+}: CreateEventWizardProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // Form data state
-  const [formData, setFormData] = useState<CreateEventFormData>({
-    event_name: "",
-    organizer: "",
-    description: "",
-    chief_guests: [""],
-    speakers: [""],
-    event_date: "",
-    event_time: "",
-    venue: "",
-    address: "",
-    images: [],
-    imagePreviewUrls: [],
-    tickets: [{ ticket_name: "", price: 0, available_quantity: 0 }],
-  });
+  // Form data state - use initialData if provided (edit mode)
+  const [formData, setFormData] = useState<CreateEventFormData>(
+    initialData || {
+      event_name: "",
+      organizer: "",
+      description: "",
+      chief_guests: [""],
+      speakers: [""],
+      event_date: "",
+      event_time: "",
+      venue: "",
+      address: "",
+      images: [],
+      imagePreviewUrls: [],
+      tickets: [{ ticket_name: "", price: 0, available_quantity: 0 }],
+    }
+  );
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -212,7 +221,9 @@ export default function CreateEventWizard({ onSubmit, onCancel }: CreateEventWiz
             >
               ← Back
             </button>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">New Event</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              {isEditMode ? "Edit Event" : "New Event"}
+            </h1>
           </div>
 
           {/* Progress Indicator */}

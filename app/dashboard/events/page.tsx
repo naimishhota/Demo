@@ -40,7 +40,7 @@ export default function EventsPage() {
 
       setEvents(data.events || []);
     } catch (err) {
-      console.error("Error fetching events:", err);
+
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);
@@ -78,7 +78,7 @@ export default function EventsPage() {
       fetchEvents();
       setDeleteConfirm(null);
     } catch (err) {
-      console.error("Error deleting event:", err);
+
       setError(err instanceof Error ? err.message : "An error occurred");
     }
   };
@@ -213,8 +213,10 @@ export default function EventsPage() {
                           d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                         />
                       </svg>
-                      {new Date(event.event_date).toLocaleDateString()} at{" "}
-                      {event.event_time}
+                      <span suppressHydrationWarning>
+                        {new Date(event.event_date).toLocaleDateString()} at{" "}
+                        {event.event_time}
+                      </span>
                     </div>
                     <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                       <svg
@@ -249,6 +251,12 @@ export default function EventsPage() {
 
                   {/* Actions */}
                   <div className="flex gap-2">
+                    <Link
+                      href={`/dashboard/events/${event.id}/edit`}
+                      className="flex-1 px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 font-medium text-center"
+                    >
+                      Edit
+                    </Link>
                     <button
                       onClick={() => setDeleteConfirm(event.id)}
                       className="flex-1 px-4 py-2 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-200 dark:hover:bg-red-800 font-medium"

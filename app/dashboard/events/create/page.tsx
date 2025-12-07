@@ -9,11 +9,10 @@ export default function CreateEventPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (formData: CreateEventFormData) => {
+  const handleSubmit = async (formData: CreateEventFormData) => {  
     try {
       setError(null);
 
-      // Get user from localStorage (set during login)
       const storedUser = localStorage.getItem("app_user");
       const storedRole = localStorage.getItem("app_role");
       
@@ -25,13 +24,9 @@ export default function CreateEventPage() {
       
       const user = JSON.parse(storedUser);
 
-      // Prepare form data for API
       const apiFormData = new FormData();
       
-      // Add user email for authentication
       apiFormData.append("user_email", user.email);
-      
-      // Add event fields
       apiFormData.append("event_name", formData.event_name);
       apiFormData.append("organizer", formData.organizer);
       apiFormData.append("description", formData.description);
@@ -41,8 +36,6 @@ export default function CreateEventPage() {
       apiFormData.append("event_time", formData.event_time);
       apiFormData.append("venue", formData.venue);
       apiFormData.append("address", formData.address);
-      
-      // Add tickets
       apiFormData.append("tickets", JSON.stringify(formData.tickets));
       
       // Add images
@@ -50,7 +43,6 @@ export default function CreateEventPage() {
         apiFormData.append(`image_${index}`, image);
       });
 
-      // Call API
       const response = await fetch("/api/events/create", {
         method: "POST",
         body: apiFormData,
@@ -62,10 +54,8 @@ export default function CreateEventPage() {
         throw new Error(result.error || "Failed to create event");
       }
 
-      // Success - redirect to events list
       router.push("/dashboard/events");
     } catch (err) {
-      console.error("Error creating event:", err);
       setError(err instanceof Error ? err.message : "An error occurred");
     }
   };

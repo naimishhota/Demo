@@ -6,21 +6,21 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const userEmail = formData.get("user_email") as string;
 
-    console.log("1. Received user_email:", userEmail);
+
 
     if (!userEmail) {
       return NextResponse.json({ error: "No user email provided", step: 1 }, { status: 400 });
     }
 
     // Check users table
-    console.log("2. Querying users table...");
+
     const { data: userData, error: userError } = await supabase
       .from("users")
       .select("*")
       .eq("email", userEmail)
       .single();
 
-    console.log("3. User query result:", { userData, userError });
+
 
     if (userError) {
       return NextResponse.json({ 
@@ -35,12 +35,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "User not found", step: 3 }, { status: 404 });
     }
 
-    console.log("4. User data:", userData);
-    console.log("5. User ID:", userData.id);
-    console.log("6. User ID type:", typeof userData.id);
+
 
     // Try to create a test event
-    console.log("7. Creating test event...");
+
     const testEvent = {
       event_name: "Test Event",
       organizer: "Test Org",
@@ -55,7 +53,7 @@ export async function POST(request: NextRequest) {
       created_by: userData.id,
     };
 
-    console.log("8. Test event data:", testEvent);
+
 
     const { data: event, error: eventError } = await supabase
       .from("events")
@@ -63,7 +61,7 @@ export async function POST(request: NextRequest) {
       .select()
       .single();
 
-    console.log("9. Event insert result:", { event, eventError });
+
 
     if (eventError) {
       return NextResponse.json({ 

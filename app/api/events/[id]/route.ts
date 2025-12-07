@@ -4,10 +4,12 @@ import { supabase } from "@/lib/supabaseClient";
 // GET single event
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
+    
+
 
     // Fetch event
     const { data: event, error: eventError } = await supabase
@@ -16,8 +18,11 @@ export async function GET(
       .eq("id", id)
       .single();
 
+
+
     if (eventError || !event) {
-      return NextResponse.json({ error: "Event not found" }, { status: 404 });
+
+      return NextResponse.json({ error: "Event not found", details: eventError?.message }, { status: 404 });
     }
 
     // Fetch tickets
@@ -26,12 +31,93 @@ export async function GET(
       .select("*")
       .eq("event_id", id);
 
+
+
     return NextResponse.json(
       { event: { ...event, tickets: tickets || [] } },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error fetching event:", error);
+
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+
+// PUT - Update event
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    
+    // Get user email from request body
+    const body = await request.json();
+    const userEmail = body.user_email;
+    
+    if (!userEmail) {
+      return NextResponse.json({ error: "Unauthorized - User email required" }, { status: 401 });
+    }
+    
+    // Verify user is admin
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("role, id")
+      .eq("email", userEmail)
+      .single();
+    
+    if (userError || !userData || userData.role !== "admin") {
+      return NextResponse.json({ error: "Forbidden - Admin access required" }, { status: 403 });
+    }
+
+    // Extract update data (excluding user_email and tickets)
+    const { user_email, tickets, ...eventData } = body;
+    
+    // Update event
+    const { data: event, error: eventError } = await supabase
+      .from("events")
+      .update({
+        ...eventData,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (eventError) {
+      return NextResponse.json(
+        { error: "Failed to update event", details: eventError.message },
+        { status: 500 }
+      );
+    }
+
+    // Update tickets if provided
+    if (tickets && Array.isArray(tickets)) {
+      // Delete existing tickets
+      await supabase.from("event_tickets").delete().eq("event_id", id);
+      
+      // Insert new tickets
+      if (tickets.length > 0) {
+        const ticketsWithEventId = tickets.map((ticket: any) => ({
+          event_id: id,
+          ticket_name: ticket.ticket_name,
+          price: ticket.price,
+          available_quantity: ticket.available_quantity,
+        }));
+
+        await supabase.from("event_tickets").insert(ticketsWithEventId);
+      }
+    }
+
+    return NextResponse.json(
+      { success: true, event, message: "Event updated successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -42,10 +128,10 @@ export async function GET(
 // DELETE event
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     
     // Get user email from request body or query params
     const body = await request.json().catch(() => ({}));
@@ -85,7 +171,7 @@ export async function DELETE(
             await supabase.storage.from("event-images").remove([filePath]);
           }
         } catch (error) {
-          console.error("Error deleting image:", error);
+
         }
       }
     }
@@ -108,7 +194,7 @@ export async function DELETE(
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error deleting event:", error);
+
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
